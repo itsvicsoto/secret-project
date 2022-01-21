@@ -8,13 +8,13 @@ import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
 import { connect, set } from 'mongoose';
+import YAML from 'yamljs';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { dbConnection } from '@databases';
 import { Routes } from '@interfaces/routes.interface';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
-
 class App {
   public app: express.Application;
   public port: string | number;
@@ -83,6 +83,8 @@ class App {
     };
 
     const specs = swaggerJSDoc(options);
+    const swaggerDocument = YAML.load('swagger.yaml');
+    this.app.get('/api-docs/swagger.json', (_req, res) => res.json(swaggerDocument));
     this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
   }
 

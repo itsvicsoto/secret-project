@@ -1,6 +1,13 @@
+swagger: '2.0'
+info:
+  title: The Secret Project
+  version: 1.0.0
+
 tags:
 - name: users
   description: users API
+- name: auth
+  description: auth API for user login, signup, logout
 
 paths:
 # [GET] users
@@ -100,6 +107,171 @@ paths:
         500:
           description: 'Server Error'
 
+# [POST] signup
+  /signup:
+    post:
+      tags:
+      - auth
+      summary: Sign up or register a user
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+              default: 'your.email@domain.com'
+            password:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+      responses:
+        201:
+          description: 'Created'
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                $ref: '#/definitions/users'
+              message:
+                type: string
+                example: 'signup'
+        400:
+          description: 'Bad Request'
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: 'email must be an email, password must be a string'
+        409:
+          description: 'Conflict'
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: 'Your email your.email@domain.com already exists'
+        500:
+          description: 'Server Error'
+          schema:
+            $ref: '#/definitions/ErrorResponse500'
+          
+# [POST] login
+  /login:
+    post:
+      tags:
+      - auth
+      summary: Login an existing user
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+              default: 'your.email@domain.com'
+            password:
+              type: string
+      responses:
+        200:
+          description: 'Successful Response'
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                $ref: '#/definitions/users'
+              message:
+                type: string
+                example: 'login'
+        400:
+          description: 'Bad Request'
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: 'email must be an email, password must be a string'
+        409:
+          description: 'Conflict'
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: 'Your password not matching'
+        500:
+          description: 'Server Error'
+          schema:
+            $ref: '#/definitions/ErrorResponse500'
+          
+# [POST] logout
+  /logout:
+    post:
+      tags:
+      - auth
+      summary: Logout a user
+      responses:
+        200:
+          description: 'Successful Response'
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                $ref: '#/definitions/users'
+              message:
+                type: string
+                example: 'logout'
+        404:
+          description: 'Error: Not Found'
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: 'Authentication token missing'
+        500:
+          description: 'Server Error'
+          schema:
+            $ref: '#/definitions/ErrorResponse500'
+
+# [GET] /
+  /:
+    get:
+      tags:
+      summary: Index
+      parameters:
+      - name: id
+        in: path
+        description: User Id
+        required: true
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
 # definitions
 definitions:
   users:
@@ -113,9 +285,24 @@ definitions:
       email:
         type: string
         description: user Email
+        example: 'john.snow@gmail.com'
+      first_name:
+        type: string
+        description: user first name
+        example: 'John'
+      last_name:
+        type: string
+        description: user last name
+        example: 'Snow'
       password:
         type: string
-        description: user Password
+  ErrorResponse500:
+    type: object
+    properties:
+      message:
+        type: string
+        description: Internal Server Error Message Description
+        example: 'Internal Server Error Occurred'
 
 schemes:
  - https
