@@ -2,7 +2,7 @@
     "env": "test",
     "dbConfig": {
         "host": "localhost",
-        "database": "test",
+        "database": "thesecretproject-test",
         "port": 27017
     },
     "secretKey": "secretKey",
