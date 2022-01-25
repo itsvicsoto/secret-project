@@ -279,11 +279,14 @@ paths:
       summary: Index
       responses:
         200:
-          description: 'OK'
-        409:
-          description: 'Conflict'
+          description: 'Successful Response'
+          schema:
+            type: string
+            example: 'OK'
         500:
           description: 'Server Error'
+          schema:
+            $ref: '#/definitions/ErrorResponse500'
 
 # definitions
 definitions:
