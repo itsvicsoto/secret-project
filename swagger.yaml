@@ -9,12 +9,20 @@ tags:
 - name: auth
   description: auth API for user login, signup, logout
 
+securityDefinitions:
+  ApiKeyAuth:       
+      type: apiKey
+      in: header    
+      name: Authorization
+
 paths:
 # [GET] users
   /users:
     get:
       tags:
       - users
+      security:
+        - ApiKeyAuth: []
       summary: Find All Users
       responses:
         200:
@@ -26,6 +34,8 @@ paths:
     post:
       tags:
       - users
+      security:
+        - ApiKeyAuth: []
       summary: Add User
       parameters:
       - name: body
@@ -49,9 +59,12 @@ paths:
     get:
       tags:
       - users
+      security:
+        - ApiKeyAuth: []
       summary: Find User By Id
       parameters:
       - name: id
+        type: string
         in: path
         description: User Id
         required: true
@@ -67,9 +80,12 @@ paths:
     put:
       tags:
       - users
+      security:
+        - ApiKeyAuth: []
       summary: Update User By Id
       parameters:
       - name: id
+        type: string
         in: path
         description: user Id
         required: true
@@ -93,9 +109,12 @@ paths:
     delete:
       tags:
       - users
+      security:
+        - ApiKeyAuth: []
       summary: Delete User By Id
       parameters:
       - name: id
+        type: string
         in: path
         description: user Id
         required: true
@@ -257,13 +276,7 @@ paths:
 # [GET] /
   /:
     get:
-      tags:
       summary: Index
-      parameters:
-      - name: id
-        in: path
-        description: User Id
-        required: true
       responses:
         200:
           description: 'OK'
