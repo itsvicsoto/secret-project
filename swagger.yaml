@@ -26,9 +26,25 @@ paths:
       summary: Find All Users
       responses:
         200:
-          description: 'OK'
+          description: 'Successful Response'
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/users'
+              message:
+                type: string
+                example: 'findAll'
+        404:
+          description: 'Authentication Missing'
+          schema:
+            $ref: '#/definitions/ErrorResponse404'
         500:
           description: 'Server Error'
+          schema:
+            $ref: '#/definitions/ErrorResponse500'
 
 # [POST] users
     post:
@@ -37,22 +53,63 @@ paths:
       security:
         - ApiKeyAuth: []
       summary: Add User
+      consumes:
+        - application/json
+      produces:
+        - application/json
       parameters:
       - name: body
         in: body
         description: user Data
         required: true
         schema:
-          $ref: '#/definitions/users'
+          type: object
+          properties:
+            email:
+              type: string
+              default: 'your.email@domain.com'
+            password:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
       responses:
         201:
           description: 'Created'
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                $ref: '#/definitions/users'
+              message:
+                type: string
+                example: 'created'
         400:
           description: 'Bad Request'
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: 'email must be an email, password must be a string'
         409:
           description: 'Conflict'
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: 'Your email your.email@domain.com already exists'
+        404:
+          description: 'Authentication Missing'
+          schema:
+            $ref: '#/definitions/ErrorResponse404'
         500:
           description: 'Server Error'
+          schema:
+            $ref: '#/definitions/ErrorResponse500'
 
 # [GET] users/id
   /users/{id}:
@@ -70,11 +127,40 @@ paths:
         required: true
       responses:
         200:
-          description: 'OK'
+          description: 'Successful Response'
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                $ref: '#/definitions/users'
+              message:
+                type: string
+                example: 'findOne'
+        400:
+          description: 'Bad Request'
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: 'id must be a mongodb id'
         409:
           description: 'Conflict'
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: 'Youre not user'
+        404:
+          description: 'Authentication Missing'
+          schema:
+            $ref: '#/definitions/ErrorResponse404'
         500:
           description: 'Server Error'
+          schema:
+            $ref: '#/definitions/ErrorResponse500'
 
 # [PUT] users/id
     put:
@@ -93,17 +179,52 @@ paths:
         in: body
         description: user Data
         required: true
-        schema:
-          $ref: '#/definitions/users'
+        properties:
+          email:
+            type: string
+            default: 'your.email@domain.com'
+          password:
+            type: string
+          first_name:
+            type: string
+          last_name:
+            type: string
       responses:
         200:
-          description: 'OK'
+          description: 'Successful Response'
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                $ref: '#/definitions/users'
+              message:
+                type: string
+                example: 'updated'
         400:
           description: 'Bad Request'
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: 'id must be a mongodb id'
         409:
           description: 'Conflict'
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: 'Youre not user'
+        404:
+          description: 'Authentication Missing'
+          schema:
+            $ref: '#/definitions/ErrorResponse404'
         500:
           description: 'Server Error'
+          schema:
+            $ref: '#/definitions/ErrorResponse500'
 
 # [DELETE] users/id
     delete:
@@ -123,8 +244,14 @@ paths:
           description: 'OK'
         409:
           description: 'Conflict'
+        404:
+          description: 'Authentication Missing'
+          schema:
+            $ref: '#/definitions/ErrorResponse404'
         500:
           description: 'Server Error'
+          schema:
+            $ref: '#/definitions/ErrorResponse500'
 
 # [POST] signup
   /signup:
@@ -319,6 +446,13 @@ definitions:
         type: string
         description: Internal Server Error Message Description
         example: 'Internal Server Error Occurred'
+  ErrorResponse404:
+    type: object
+    properties:
+      message:
+        type: string
+        description: Authentication token missing
+        example: 'Authentication token missing'
 
 schemes:
  - https
