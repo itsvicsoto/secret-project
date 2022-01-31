@@ -21,6 +21,10 @@ paths:
     get:
       tags:
       - users
+      consumes:
+        - application/json
+      produces:
+        - application/json
       security:
         - ApiKeyAuth: []
       summary: Find All Users
@@ -50,6 +54,10 @@ paths:
     post:
       tags:
       - users
+      consumes:
+        - application/json
+      produces:
+        - application/json
       security:
         - ApiKeyAuth: []
       summary: Add User
@@ -116,6 +124,10 @@ paths:
     get:
       tags:
       - users
+      consumes:
+        - application/json
+      produces:
+        - application/json
       security:
         - ApiKeyAuth: []
       summary: Find User By Id
@@ -166,6 +178,10 @@ paths:
     put:
       tags:
       - users
+      consumes:
+        - application/json
+      produces:
+        - application/json
       security:
         - ApiKeyAuth: []
       summary: Update User By Id
@@ -230,6 +246,10 @@ paths:
     delete:
       tags:
       - users
+      consumes:
+        - application/json
+      produces:
+        - application/json
       security:
         - ApiKeyAuth: []
       summary: Delete User By Id
@@ -427,6 +447,10 @@ paths:
   /:
     get:
       summary: Index
+      consumes:
+        - text/plain
+      produces:
+        - text/plain
       responses:
         200:
           description: 'Successful Response'
