@@ -190,17 +190,17 @@ paths:
       - name: body
         in: body
         description: user Data
-        required: true
-        properties:
-          email:
-            type: string
-            default: 'your.email@domain.com'
-          password:
-            type: string
-          first_name:
-            type: string
-          last_name:
-            type: string
+        schema:
+          properties:
+            email:
+              type: string
+              default: 'your.email@domain.com'
+            password:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
       responses:
         200:
           description: 'Successful Response'

@@ -14,9 +14,11 @@
     "lint:fix": "npm run lint -- --fix",
     "deploy:prod": "npm run build && pm2 start ecosystem.config.js --only prod",
     "deploy:dev": "pm2 start ecosystem.config.js --only dev",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "generate-api": "openapi-generator-cli generate -i swagger.yaml -g typescript-angular -o generated-sources/openapi --additional-properties=ngVersion=6.1.7,npmName=restClient,supportsES6=true,npmVersion=6.9.0,withInterfaces=true"
   },
   "dependencies": {
+    "@openapitools/openapi-generator-cli": "^2.4.25",
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
