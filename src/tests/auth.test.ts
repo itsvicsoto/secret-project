@@ -7,7 +7,7 @@ import AuthRoute from '@routes/auth.route';
 import { User } from '@interfaces/users.interface';
 
 afterAll(async () => {
-  await new Promise<void>(resolve => setTimeout(() => resolve(), 500));
+  mongoose.disconnect();
 });
 
 let session = null;
@@ -79,7 +79,6 @@ describe('Testing Auth', () => {
 
       (mongoose as any).connect = jest.fn();
       const app = new App([authRoute]);
-      console.log('session', session);
       return request(app.getServer())
         .post(`${authRoute.path}logout`)
         .send(userData)
